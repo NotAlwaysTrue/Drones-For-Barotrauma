@@ -1,0 +1,5 @@
+Hook.Add("client.disconnected", "Drones.resetOnDisconnected", function(client)
+    Networking.Receive("lastcontrolled", function(message, client)
+        client.setclientcharacter(message)
+    end)
+end)

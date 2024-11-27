@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item name="" identifier="UAVController" category="Misc" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="" Tags="smallitem" useinhealthinterface="true" description="" scale="0.15" impactsoundtag="impact_soft">
+    <Deconstruct time="5" />
+    <PreferredContainer secondary="wreckmedcab,abandonedmedcab" minamount="1" maxamount="4" spawnprobability="0.3" />
+    <PreferredContainer secondary="outpostmedcab" minamount="1" maxamount="2" spawnprobability="0.4" />
+    <PreferredContainer secondary="outpostmedcompartment" amount="2" spawnprobability="0.4" />
+    <PreferredContainer secondary="outposttrashcan" amount="1" spawnprobability="0.4" />
+    <PreferredContainer primary="medcab" secondary="medcontainer" spawnprobability="0.4" />
+    <Price baseprice="250" minavailable="3" maxavailable="5">
+      <Price storeidentifier="merchantoutpost" multiplier="0.6" />
+      <Price storeidentifier="merchantcity" multiplier="0.6" />
+      <Price storeidentifier="merchantresearch" multiplier="0.6" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.6" />
+      <Price storeidentifier="merchantmine" multiplier="0.6" />
+      <Price storeidentifier="merchantmedical" multiplier="0.6" />
+    </Price>
+    <InventoryIcon texture="%ModDir%/augmentin.png" sourcerect="0,0,160,160" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/augmentin.png" sourcerect="0,0,160,160" depth="0.6" origin="0.5,0.5" />
+    <Body width="45" height="45" density="11" />
+    <Holdable canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect tags="medical" type="OnUse" target="This" disabledeltatime="true">
+        <!--<Sound file="%ModDir%/audio/calokb.ogg" range="500" />-->
+      </StatusEffect>
+	  <StatusEffect tags="medical" type="OnUse" target="Limb" >
+      </StatusEffect>
+    </Holdable>
+    <AiTarget sightrange="1000" static="true" />
+  </Item>
+</Items>
