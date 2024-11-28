@@ -25,11 +25,21 @@ function findclient(character)
     return nil
 end
 
-function findcharacter(client)
+function findcharacterbyclient(client)
     local clientname = client.Name
     local characterlist = Character.CharacterList
     for i,v in pairs(characterlist) do
         if v.Name == clientname then
+            return v
+        end
+    end
+    return nil
+end
+
+function findcharacterbyname(name)
+    local characterlist = Character.CharacterList
+    for i,v in pairs(characterlist) do
+        if v.Name == name then
             return v
         end
     end
@@ -44,7 +54,6 @@ Drones.ItemMethods.UAVController = function(item, usingCharacter, targetCharacte
     local usingclient = findclient(usingCharacter)
     if usingclient == nil then return end
     if SERVER then
-        targetCharacter.SetOwnerClient(usingclient)
         usingclient.SetClientCharacter(targetCharacter)
     end
     if CLIENT then
