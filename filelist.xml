@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <contentpackage name="Drones For Barotrauma" modversion="1.0.0" corepackage="False" steamworkshopid="3137556946" gameversion="1.5.9.2">
   <Other file="%ModDir%/lua/Autorun/init.lua" />
-  <Other file="%ModDir%/lua/Scripts/Client/Client.lua" />
   <Item file="%ModDir%/Item.xml" />
 </contentpackage>

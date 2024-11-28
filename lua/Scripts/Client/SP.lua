@@ -12,12 +12,6 @@ Hook.Add("item.applyTreatment", "Drones.itemused", function(item, usingCharacter
     end
 end)
 
-Hook.Add("client.disconnected", "Drones.resetOnDisconnected", function(client)  --Send Original character on disconnect(EXP)
-    local lastcontrolled = Networking.Start("lastcontrolled")
-    lastcontrolled.WriteString(charLastControlled)
-    Networking.Send(lastcontrolled)
-end)
-
 Hook.Patch("Barotrauma.Character", "ControlLocalPlayer", function(character)  --F to Switch, cooldown for 0.5s(500ms) to avoid issue
     if not character then return end
     if charLastControlled == nil or charCurrentControlling == nil then return end
@@ -36,6 +30,13 @@ end, Hook.HookMethodType.After)
 Hook.Add("character.death", "Drones.resetOndronesdead", function(character)  --Reset on death
     if character.Name == charCurrentControlling.Name then
         Character.Controlled = charLastControlled
+        charCurrentControlling = nil
+        controlling = false
+    end
+    if character.Name == charLastControlled.Name then  --Reset controller on controller death
+        Character.Controlled = nil
+        controlling = false
+        charLastControllsed = nil
         charCurrentControlling = nil
     end
 end)
