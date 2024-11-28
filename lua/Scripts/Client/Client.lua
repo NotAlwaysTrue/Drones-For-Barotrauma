@@ -1,25 +1,26 @@
-Hook.Patch("Barotrauma.Character", "ControlLocalPlayer", function(character)  --F to Switch, cooldown for 0.5s(500ms) to avoid issue
+Hook.Patch("Barotrauma.Character", "ControlLocalPlayer", function(character)  --F to Switch, cooldown for 1s(1000ms) to avoid issue
     if not character then return end
     if charLastControlled == nil or charCurrentControlling == nil then return end
     if PlayerInput.KeyDown(Keys.F) then
         if controlling then
-            print("Controll Off")
+            --print("Controll Off")
             local message = Networking.Start("ControllSwitch")
             message.WriteString(charLastControlled.Name)
             Networking.Send(message)
-            Timer.Wait(function() controlling = false end, 500)
+            Timer.Wait(function() controlling = false end, minSwitchtime)
         end
         if not controlling then
-            print("Controll On")
+            --print("Controll On")
             local message = Networking.Start("ControllSwitch")
             message.WriteString(charCurrentControlling.Name)
             Networking.Send(message)
-            Timer.Wait(function() controlling = true end, 500)
+            Timer.Wait(function() controlling = true end, minSwitchtime)
         end
     end
 end, Hook.HookMethodType.After)
 
-Hook.Add("character.death", "Drones.resetOndronesdead", function(character)  
+Hook.Add("character.death", "Drones.resetOndronesdead", function(character)
+    if character == nil then return end
     if character.Name == charCurrentControlling.Name then  --Reset controller on controlled death
         Character.Controlled = charLastControlled
         charCurrentControlling = nil
