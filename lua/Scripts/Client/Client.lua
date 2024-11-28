@@ -20,7 +20,7 @@ Hook.Patch("Barotrauma.Character", "ControlLocalPlayer", function(character)  --
 end, Hook.HookMethodType.After)
 
 Hook.Add("character.death", "Drones.resetOndronesdead", function(character)
-    if character == nil then return end
+    if character == nil or charCurrentControlling == nil or charLastControlled == nil then return end
     if character.Name == charCurrentControlling.Name then  --Reset controller on controlled death
         Character.Controlled = charLastControlled
         charCurrentControlling = nil
