@@ -1,5 +1,6 @@
 charLastControlled = nil
 charCurrentControlling = nil
+controlling = false
 
 Hook.Add("item.applyTreatment", "Drones.itemused", function(item, usingCharacter, targetCharacter)
     if item == nil or  usingCharacter == nil or targetCharacter == nil then return end
@@ -11,31 +12,40 @@ Hook.Add("item.applyTreatment", "Drones.itemused", function(item, usingCharacter
     end
 end)
 
-Hook.Add("client.disconnected", "Drones.resetOnDisconnected", function(client)
+Hook.Add("client.disconnected", "Drones.resetOnDisconnected", function(client)  --Send Original character on disconnect(EXP)
     local lastcontrolled = Networking.Start("lastcontrolled")
     lastcontrolled.WriteString(charLastControlled)
     Networking.Send(lastcontrolled)
 end)
 
-Hook.Patch("Barotrauma.Character", "ControlLocalPlayer", function(character)  --补Hook
+Hook.Patch("Barotrauma.Character", "ControlLocalPlayer", function(character)  --F to Switch, cooldown for 0.5s(500ms) to avoid issue
     if not character then return end
-    if charLastControlled == nil then return end
+    if charLastControlled == nil or charCurrentControlling == nil then return end
     if PlayerInput.KeyDown(Keys.F) then
-        Character.Controlled = charLastControlled
-	end
+        if controlling then
+            Character.Controlled = charLastControlled
+            Timer.Wait(function() controlling = false end, 500)
+        end
+        if not controlling then
+            Character.Controlled = charCurrentControlling
+            Timer.Wait(function() controlling = true end, 500)
+        end
+    end
 end, Hook.HookMethodType.After)
 
-Hook.Add("character.death", "Drones.resetOndronesdead", function(character)
-    if character.CharacterHealth.GetAffliction('UAV',true) ~= nil then
+Hook.Add("character.death", "Drones.resetOndronesdead", function(character)  --Reset on death
+    if character.Name == charCurrentControlling.Name then
         Character.Controlled = charLastControlled
+        charCurrentControlling = nil
     end
 end)
 
 Drones.ItemMethods = {}
 
-Drones.ItemMethods.UAVController = function(item, usingCharacter, targetCharacter)
+Drones.ItemMethods.UAVController = function(item, usingCharacter, targetCharacter)  --The "controller"
     if targetCharacter.IsPlayer then return end
     charLastControlled = usingCharacter
     Character.Controlled = targetCharacter
     charCurrentControlling = targetCharacter
+    controlling = true
 end
