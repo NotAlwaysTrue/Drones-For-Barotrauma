@@ -1,3 +1,7 @@
+charLastControlled = nil
+charCurrentControlling = nil
+controlling = false
+
 Hook.Patch("Barotrauma.Character", "ControlLocalPlayer", function(character)  --F to Switch, cooldown for 1s(1000ms) to avoid issue
     if not character then return end
     if charLastControlled == nil or charCurrentControlling == nil then return end
