@@ -1,9 +1,3 @@
-if CLIENT then
-    charLastControlled = nil
-    charCurrentControlling = nil
-    controlling = false
-end
-
 Hook.Add("item.applyTreatment", "Drones.itemused", function(item, usingCharacter, targetCharacter)
     if item == nil or  usingCharacter == nil or targetCharacter == nil then return end
     local identifier = item.Prefab.Identifier.Value
