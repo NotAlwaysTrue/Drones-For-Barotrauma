@@ -6,14 +6,13 @@ controlling = false
 Hook.Patch("Barotrauma.Character", "ControlLocalPlayer", function(character)  --F to Switch, cooldown for 1s(1000ms) to avoid issue
     if not character then return end
     if charLastControlled == nil or charCurrentControlling == nil then return end
-    if controlling and (charLastControlled.IsUnconscious or charCurrentControlling.IsUnconscious) then --Reset controller when controller or controlled is unconscious, only when controlling
+    if (charLastControlled.IsUnconscious or charCurrentControlling.IsUnconscious) and controlling then --Reset controller when controller or controlled is unconscious, only when controlling
         local message = Networking.Start("ControllSwitch")
         message.WriteString(tostring(charLastControlled.ID))
         Networking.Send(message)
         controlling = false
-        return
     end
-    if PlayerInput.KeyDown(Keys.F) and cd == 0 then
+    if PlayerInput.KeyDown(Keys.F) and cd == 0 and not (charLastControlled.IsUnconscious or charCurrentControlling.IsUnconscious) then
         if controlling then
             cd = 1
             local message = Networking.Start("ControllSwitch")
