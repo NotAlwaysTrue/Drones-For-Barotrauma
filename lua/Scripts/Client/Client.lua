@@ -53,12 +53,12 @@ Hook.Add("character.death", "Drones.resetOndronesdead", function(character)
             controlling = false
             return
         end  --reset all since user is dead
-        Character.Controlled = nil
         controlling = false
-        charLastControllsed = nil
         charCurrentControlling = nil
         local message = Networking.Start("ControllSwitch")
         message.WriteString(tostring(charLastControlled.ID))
         Networking.Send(message)
+        charLastControllsed = nil
+        Character.Controlled = nil
     end
 end)
