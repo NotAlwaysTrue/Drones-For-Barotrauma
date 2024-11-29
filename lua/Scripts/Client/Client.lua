@@ -1,3 +1,4 @@
+cd = 0
 charLastControlled = nil
 charCurrentControlling = nil
 controlling = false
@@ -5,20 +6,27 @@ controlling = false
 Hook.Patch("Barotrauma.Character", "ControlLocalPlayer", function(character)  --F to Switch, cooldown for 1s(1000ms) to avoid issue
     if not character then return end
     if charLastControlled == nil or charCurrentControlling == nil then return end
-    if PlayerInput.KeyDown(Keys.F) then
+    if controlling and (charLastControlled.IsUnconscious or charCurrentControlling.IsUnconscious) then --Reset controller when controller or controlled is unconscious, only when controlling
+        local message = Networking.Start("ControllSwitch")
+        message.WriteString(tostring(charLastControlled.ID))
+        Networking.Send(message)
+        controlling = false
+        return
+    end
+    if PlayerInput.KeyDown(Keys.F) and cd == 0 then
         if controlling then
-            --print("Controll Off")
+            cd = 1
             local message = Networking.Start("ControllSwitch")
-            message.WriteString(charLastControlled.Name)
+            message.WriteString(tostring(charLastControlled.ID))
             Networking.Send(message)
-            Timer.Wait(function() controlling = false end, minSwitchtime)
+            Timer.Wait(function() controlling = false cd = 0 end, minSwitchtime)
         end
         if not controlling then
-            --print("Controll On")
+            cd = 1
             local message = Networking.Start("ControllSwitch")
-            message.WriteString(charCurrentControlling.Name)
+            message.WriteString(tostring(charCurrentControlling.ID))
             Networking.Send(message)
-            Timer.Wait(function() controlling = true end, minSwitchtime)
+            Timer.Wait(function() controlling = true cd = 0 end, minSwitchtime)
         end
     end
 end, Hook.HookMethodType.After)
@@ -26,20 +34,31 @@ end, Hook.HookMethodType.After)
 Hook.Add("character.death", "Drones.resetOndronesdead", function(character)
     if character == nil or charCurrentControlling == nil or charLastControlled == nil then return end
     if character.Name == charCurrentControlling.Name then  --Reset controller on controlled death
+        if not controlling then  --don't send message when not controlling
+            charCurrentControlling = nil
+            controlling = false
+            return
+        end  --reset only target
         Character.Controlled = charLastControlled
         charCurrentControlling = nil
         controlling = false
         local message = Networking.Start("ControllSwitch")
-        message.WriteString(charLastControlled.Name)
+        message.WriteString(tostring(charLastControlled.ID))
         Networking.Send(message)
     end
     if character.Name == charLastControlled.Name then  --Reset controller on controller death
+        if not controlling then  --don't send message when not controlling
+            charLastControlled = nil
+            charCurrentControlling = nil
+            controlling = false
+            return
+        end  --reset all since user is dead
         Character.Controlled = nil
         controlling = false
         charLastControllsed = nil
         charCurrentControlling = nil
         local message = Networking.Start("ControllSwitch")
-        message.WriteString(charLastControlled.Name)
+        message.WriteString(tostring(charLastControlled.ID))
         Networking.Send(message)
     end
 end)

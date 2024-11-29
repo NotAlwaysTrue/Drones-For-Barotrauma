@@ -9,21 +9,10 @@ function findclient(character)
     return nil
 end
 
-function findcharacterbyclient(client)
-    local clientname = client.Name
+function findcharacterbyID(id)
     local characterlist = Character.CharacterList
     for i,v in pairs(characterlist) do
-        if v.Name == clientname then
-            return v
-        end
-    end
-    return nil
-end
-
-function findcharacterbyname(name)
-    local characterlist = Character.CharacterList
-    for i,v in pairs(characterlist) do
-        if v.Name == name then
+        if tostring(v.ID) == id then
             return v
         end
     end
