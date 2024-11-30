@@ -13,7 +13,7 @@ Drones.ItemMethods = {}
 Drones.ItemMethods.UAVController = function(item, usingCharacter, targetCharacter)
     if targetCharacter.IsPlayer then return end
     if targetCharacter == nil or targetCharacter == nil then return end
-    local usingclient = findclient(usingCharacter)
+    local usingclient = Util.FindClientCharacter(usingCharacter)
     if usingclient == nil then return end
     if SERVER then
         usingclient.SetClientCharacter(targetCharacter)
