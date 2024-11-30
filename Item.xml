@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-  <Item name="" identifier="UAVController" category="Misc" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="" Tags="smallitem" useinhealthinterface="true" description="" scale="0.15" impactsoundtag="impact_soft">
+  <Item name="" identifier="UAVController" type="uavcontroller" category="Misc" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="" Tags="smallitem" useinhealthinterface="true" description="" scale="0.15" impactsoundtag="impact_soft">
     <InventoryIcon texture="%ModDir%/augmentin.png" sourcerect="0,0,160,160" origin="0.5,0.5" />
     <Sprite texture="%ModDir%/augmentin.png" sourcerect="0,0,160,160" depth="0.6" origin="0.5,0.5" />
     <Body width="45" height="45" density="11" />
@@ -12,6 +12,9 @@
       <StatusEffect tags="medical" type="OnUse" target="This, Limb" duration="0.0">
       </StatusEffect>
     </MeleeWeapon>
+    <CustomInterface canbeselected="true" drawhudwhenequipped="true">
+      <GuiFrame relativesize="0.5,0.5" anchor="CenterLeft" pivot="CenterLeft" style="ItemUI" />
+    </CustomInterface>
     <AiTarget sightrange="1000" static="true" />
   </Item>
 </Items>
