@@ -17,6 +17,7 @@ Drones.ItemMethods.UAVController = function(item, usingCharacter, targetCharacte
     if usingclient == nil then return end
     if SERVER then
         usingclient.SetClientCharacter(targetCharacter)
+        Controllers[Util.FindClientCharacter(usingCharacter)] = usingCharacter
     end
     if CLIENT then
         charLastControlled = usingCharacter
