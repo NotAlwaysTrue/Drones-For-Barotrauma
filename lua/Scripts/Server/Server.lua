@@ -1,4 +1,3 @@
-Controllers = { }
 Controllertargets = { }
 
 Hook.Add("roundEnd", "Drones.resetonend", function() --reset every controller on round end

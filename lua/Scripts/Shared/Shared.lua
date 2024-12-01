@@ -1,3 +1,5 @@
+Controllers = { }
+
 Hook.Add("item.applyTreatment", "Drones.itemused", function(item, usingCharacter, targetCharacter)
     if item == nil or  usingCharacter == nil or targetCharacter == nil then return end
     local identifier = item.Prefab.Identifier.Value
@@ -16,8 +18,8 @@ Drones.ItemMethods.UAVController = function(item, usingCharacter, targetCharacte
     local usingclient = Util.FindClientCharacter(usingCharacter)
     if usingclient == nil then return end
     if SERVER then
-        usingclient.SetClientCharacter(targetCharacter)
         Controllers[Util.FindClientCharacter(usingCharacter)] = usingCharacter
+        usingclient.SetClientCharacter(targetCharacter)
     end
     if CLIENT then
         charLastControlled = usingCharacter

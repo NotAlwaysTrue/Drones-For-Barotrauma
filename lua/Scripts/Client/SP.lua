@@ -4,7 +4,7 @@ controlling = false
 cd = 0
 
 Hook.Add("item.applyTreatment", "Drones.itemused", function(item, usingCharacter, targetCharacter)
-    if item == nil or  usingCharacter == nil or targetCharacter == nil then return end
+    if item == nil or usingCharacter == nil or targetCharacter == nil then return end
     local identifier = item.Prefab.Identifier.Value
     local methodtorun = Drones.ItemMethods[identifier]
     if(methodtorun~=nil) then 
@@ -35,8 +35,8 @@ Hook.Patch("Barotrauma.Character", "ControlLocalPlayer", function(character)  --
 end, Hook.HookMethodType.After)
 
 Hook.Add("character.death", "Drones.resetOndronesdead", function(character)  --Reset on death
-    if character == nil then return end
-    if character.Name == charCurrentControlling.Name then
+    if character == nil or charCurrentControlling == nil or charLastControlled == nil then return end
+    if character == charCurrentControlling then
         if not controlling then
             charCurrentControlling = nil
             controlling = false
@@ -46,7 +46,7 @@ Hook.Add("character.death", "Drones.resetOndronesdead", function(character)  --R
         charCurrentControlling = nil
         controlling = false
     end
-    if character.Name == charLastControlled.Name and controlling then  --Reset controller on controller death
+    if character == charLastControlled and controlling then  --Reset controller on controller death
         if not controlling then
             charCurrentControlling = nil
             charLastControllsed = nil

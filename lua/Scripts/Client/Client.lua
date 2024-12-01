@@ -32,7 +32,7 @@ end, Hook.HookMethodType.After)
 
 Hook.Add("character.death", "Drones.resetOndronesdead", function(character)
     if character == nil or charCurrentControlling == nil or charLastControlled == nil then return end
-    if character.Name == charCurrentControlling.Name then  --Reset controller on controlled death
+    if character == charCurrentControlling then  --Reset controller on controlled death
         if not controlling then  --don't send message when not controlling
             charCurrentControlling = nil
             controlling = false
@@ -45,7 +45,7 @@ Hook.Add("character.death", "Drones.resetOndronesdead", function(character)
         message.WriteString(tostring(charLastControlled.ID))
         Networking.Send(message)
     end
-    if character.Name == charLastControlled.Name then  --Reset controller on controller death
+    if character == charLastControlled then  --Reset controller on controller death
         if not controlling then  --don't send message when not controlling
             charLastControlled = nil
             charCurrentControlling = nil
